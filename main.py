@@ -19,15 +19,26 @@ except FileNotFoundError:
     print('File not found!!!')
 
 
+def get_shop_list_by_dishes(person, list):
+    for cook in list:
+        for recipes,products in cook_book.items():
+            if recipes == cook:
+                print("!",recipes,"!", ":")
+                for products in cook_book[recipes]:
+                    print(f"{products['ingredient_name']}{int(products['quantity']) * person} {products['measure']}")
 
-def get_shop_list_by_dishes(person, book):
-    for recipes,products in book.items():
-        print(recipes, ":")
-        for products in book[recipes]:
-            print(f"{products['ingredient_name']} {products['quantity']*person} {products['measure']}")
-        print("\n")
+cook_count = int(input('Введите количество блюд: '))
+cook_list = []
+
+for i in range(cook_count):
+    print('Блюдо номер ', i + 1)
+    dish = input('Введите название блюда: ')
+    if dish in cook_book.keys():
+        cook_list.append(dish)
+    else:
+        print('Такого блюда нет в меню!')
 
 
-person_count = input('Введите количество персон: ')
-get_shop_list_by_dishes(person_count,cook_book)
+person_count = int(input('Введите количество персон: '))
+get_shop_list_by_dishes(person_count,cook_list)
 
