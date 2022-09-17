@@ -9,7 +9,7 @@ try:
             for i in range(int(dish_count)):
                 prod_all = f.readline()
                 prod_name, prod_count, prod_ue = prod_all.split(' | ')
-                prod_ever = {'ingredient_name': prod_name, 'quantity': prod_count, 'measure': prod_ue.rstrip('\n')}
+                prod_ever = {'ingredient_name': prod_name, 'quantity': int(prod_count), 'measure': prod_ue.rstrip('\n')}
                 recipe.append(prod_ever)
             f.readline()
             cook_book[dish_name] = recipe
@@ -20,12 +20,21 @@ except FileNotFoundError:
 
 
 def get_shop_list_by_dishes(person, list):
+    all_recep = {}
     for cook in list:
-        for recipes,products in cook_book.items():
+        for recipes,recept in cook_book.items():
             if recipes == cook:
-                print("!",recipes,"!", ":")
-                for products in cook_book[recipes]:
-                    print(f"{products['ingredient_name']}{int(products['quantity']) * person} {products['measure']}")
+                for recept in cook_book[recipes]:
+                    ingr = recept['ingredient_name']
+                    quant = int(recept['quantity']) * person
+                    if ingr in all_recep.keys():
+                        quant = int(recept['quantity']) * person + all_recep[ingr]['quantity']
+                    ue = recept['measure']
+                    prod_rep = {ingr :{'measure' : ue, 'quantity' : quant}}
+                    all_recep.update(prod_rep)
+
+    print(all_recep)
+
 
 cook_count = int(input('Введите количество блюд: '))
 cook_list = []
