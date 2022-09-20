@@ -1,3 +1,4 @@
+import os
 
 cook_book = {}
 try:
@@ -50,4 +51,40 @@ for i in range(cook_count):
 
 person_count = int(input('Введите количество персон: '))
 get_shop_list_by_dishes(person_count,cook_list)
+
+current_directory = os.getcwd()
+my_dir ='sort'
+full_path = current_directory + "\\" + my_dir
+
+def sort_files():
+    ls = [f for f in os.listdir(full_path)if os.path.isfile(os.path.join(full_path, f))]
+    ls.sort()
+
+    dict_files = {}
+    sorted_dict = {}
+    file_names = {}
+    sorted_names = {}
+
+    for file_name in ls:
+        f_name = full_path + "\\" + file_name
+        count_line = sum(1 for line in open(f_name, 'r', encoding='utf-8'))
+        dict_files[count_line] = f_name
+        file_names[count_line] = file_name
+
+    for k in sorted(dict_files.keys()):
+        sorted_dict[k] = dict_files[k]
+        sorted_names[k] = file_names[k]
+    print(sorted_dict)
+
+    for j in sorted_dict.keys():
+        with open(sorted_dict[j], encoding='utf-8') as first, open('result.txt', 'a', encoding='utf-8') as second:
+            second.write(sorted_names[j])
+            second.write('\n')
+            data = first.read()
+            second.write(data)
+            second.write('\n')
+            second.write(str(j))
+            second.write('\n')
+
+print(sort_files())
 
